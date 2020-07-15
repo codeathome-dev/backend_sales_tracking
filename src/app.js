@@ -7,7 +7,8 @@ const path = require("path");
 const app = express();
 
 // router
-const authRuter = require("./routers/auth");
+const authRouter = require("./routers/auth");
+const productRouter = require("./routers/product");
 
 app.use(cors());
 app.use(morgan("dev"));
@@ -20,7 +21,8 @@ app.get("/api/v1", (req, res) =>
   res.send({ message: "Welcome to api point of sales!" })
 );
 
-app.use("/api/v1/auth", authRuter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/product", productRouter);
 
 app.use("*", (req, res) => res.send("Url not found!"));
 
