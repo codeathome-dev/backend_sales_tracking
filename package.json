@@ -6,7 +6,7 @@
   "scripts": {
     "start": "pm2-runtime start ecosystem.config.js --env production",
     "stop": "pm2-runtime stop ecosystem.config.js --env production",
-    "start:dev": "node src/app.js",
+    "start:dev": "nodemon src/app.js",
     "db:reset": "./node_modules/.bin/sequelize db:drop && ./node_modules/.bin/sequelize db:create && ./node_modules/.bin/sequelize db:migrate && ./node_modules/.bin/sequelize db:seed:all",
     "db:start": "./node_modules/.bin/sequelize db:create && ./node_modules/.bin/sequelize db:migrate",
     "db:reset:pro": "./node_modules/.bin/sequelize db:create && ./node_modules/.bin/sequelize db:migrate"

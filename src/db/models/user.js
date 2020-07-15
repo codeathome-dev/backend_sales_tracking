@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       "secret"
     );
+
     return token;
   };
 

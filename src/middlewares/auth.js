@@ -1,18 +1,22 @@
 const { verify } = require("jsonwebtoken");
-const { User } = require("../db/models");
+const { user } = require("../db/models");
 
 const isAuth = async (req, res, next) => {
   try {
     const token = req.header("Authorization").replace("Bearer ", "");
     const data = verify(token, process.env.JWT_KEY || "secret");
-    const user = await User.findOne({ _id: data.id });
-    if (!user) {
+    const checkUser = await user.findOne({ _id: data.id });
+
+    console.log("token");
+    console.log(token);
+    if (!checkUser) {
       throw new Error();
     }
-    req.user = user;
+    req.user = checkUser;
     req.token = token;
     next();
   } catch (error) {
+    console.log(error);
     res.status(401).send({ error: "Not authorized to access this resource" });
   }
 };
