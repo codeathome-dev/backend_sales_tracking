@@ -1,6 +1,7 @@
 #Analisis Database
 
 # users
+- username
 - nik
 - password
 - role (admin, supervisor, sales)
