@@ -4,20 +4,23 @@ module.exports = {
   signin: async (req, res) => {
     const { username, password } = req.body;
     try {
-      const user = await user.findOne({
+      const checkUser = await user.findOne({
         where: {
           username,
         },
       });
 
-      if (!user) {
+      if (!checkUser) {
         res.send({
           code: 404,
           message: `Not found, Can't find user with username: ${username}`,
         });
       }
 
-      const isPasswordTrue = user.checkPassword(password, user.password);
+      const isPasswordTrue = checkUser.checkPassword(
+        password,
+        checkUser.password
+      );
 
       if (!isPasswordTrue) {
         res.send({
@@ -26,14 +29,14 @@ module.exports = {
         });
       }
 
-      delete user.dataValues.password;
+      delete checkUser.dataValues.password;
 
-      const token = user.generateAuthToken(user);
+      const token = checkUser.generateAuthToken(user);
 
       res.send({
         code: 200,
         message: "success signin",
-        data: { user, token },
+        data: { checkUser, token },
       });
     } catch (error) {
       console.log(error);
