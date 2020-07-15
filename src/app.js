@@ -26,7 +26,4 @@ app.use("/api/v1/product", productRouter);
 
 app.use("*", (req, res) => res.send("Url not found!"));
 
-const port = 3000;
-app.listen(port, () =>
-  console.log(`Example app listening at http://localhost:${port}`)
-);
+app.listen(process.env.PORT || 5000, () => console.log(`success run`));

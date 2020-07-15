@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs-extra");
 const Op = require("sequelize").Op;
 
-const url = "http://localhost:8000/";
+const url = "https://cat-sales-tracking-v1.herokuapp.com/";
 
 module.exports = {
   addProduct: async (req, res) => {
