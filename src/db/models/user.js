@@ -2,8 +2,8 @@
 const bcrypt = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "User",
+  const user = sequelize.define(
+    "user",
     {
       username: DataTypes.STRING,
       nik: DataTypes.STRING,
@@ -13,20 +13,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     { underscored: true }
   );
-  User.associate = function (models) {
+  user.associate = function (models) {
     // associations can be defined here
   };
 
-  User.beforeCreate((user, _) => {
+  user.beforeCreate((user, _) => {
     const salt = bcrypt.genSaltSync(10);
     user.password = bcrypt.hashSync(user.password, salt);
   });
 
-  User.prototype.checkPassword = (password, userPassword) => {
+  user.prototype.checkPassword = (password, userPassword) => {
     return bcrypt.compareSync(password, userPassword);
   };
 
-  User.prototype.generateAuthToken = (user) => {
+  user.prototype.generateAuthToken = (user) => {
     const token = sign(
       {
         user: {
@@ -41,5 +41,5 @@ module.exports = (sequelize, DataTypes) => {
     return token;
   };
 
-  return User;
+  return user;
 };
