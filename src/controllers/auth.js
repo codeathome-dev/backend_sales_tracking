@@ -1,10 +1,10 @@
-const { User } = require("../db/models");
+const { user } = require("../db/models");
 
 module.exports = {
   signin: async (req, res) => {
     const { username, password } = req.body;
     try {
-      const user = await User.findOne({
+      const user = await user.findOne({
         where: {
           username,
         },
