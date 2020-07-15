@@ -1,0 +1,60 @@
+#Analisis Database
+
+# users
+- nik
+- password
+- role (admin, supervisor, sales)
+- status (active, nonactive)
+
+# sales
+- fullname
+- address
+- ttl
+- status (open, close)
+- user_id
+
+# supervisor
+- fullname
+- address
+- ttl
+- user_id
+
+# product
+- name
+- tgl_ex
+- price
+- stock
+- image
+
+# apotik
+- name
+- address
+- status
+
+- ####### ini supervisor yang input ######
+# trip
+- place_id
+- sales_id
+- day
+- status
+
+# checkout
+- checkout_id
+- notes
+- status (buy, notbuy)
+- lat (opsi bisa masuk di database place)
+- long (opsi bisa masuk di database place)
+
+# order
+- sales_id
+- trip_id
+- product_id
+- checkout_id
+- qty
+- price
+
+# chat
+- message
+- user_id
+
+// untuk jarak belum riset mau di gimanain
