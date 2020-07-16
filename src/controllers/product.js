@@ -3,8 +3,6 @@ const path = require("path");
 const fs = require("fs-extra");
 const Op = require("sequelize").Op;
 
-const url = "https://cat-sales-tracking-v1.herokuapp.com/";
-
 module.exports = {
   addProduct: async (req, res) => {
     try {
@@ -22,7 +20,7 @@ module.exports = {
         price,
         stock,
         tgl_ex,
-        image: `${url}images/${req.file.filename}`,
+        image: `images/${req.file.filename}`,
       });
 
       res.send({
@@ -106,5 +104,123 @@ module.exports = {
           message: "Something Went Wrong",
         });
       });
+  },
+
+  getSingleProduct: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const data = await product.findOne({
+        where: { id },
+      });
+
+      if (!data)
+        return res.send({
+          code: 404,
+          message: "Not found, product",
+        });
+      res.send({
+        code: 200,
+        status: "Ok",
+        message: "Success read single  product",
+        data: data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        status: "Internal server error!",
+        message: "An error occured in server!",
+        errors: error,
+      });
+    }
+  },
+  updateProduct: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name, tgl_ex, price, stock } = req.body;
+
+      const data = await product.findOne({
+        where: { id },
+      });
+
+      if (!data) {
+        return res.send({
+          code: 404,
+          message: `Not Found, Can't find product with id: ${id}`,
+        });
+      }
+
+      if (req.file === undefined) {
+        data.name = name;
+        data.tgl_ex = tgl_ex;
+        data.price = price;
+        data.stock = stock;
+
+        await data.save();
+      } else {
+        await fs.unlink(path.join(`uploads/${data.image}`));
+        data.name = name;
+        data.tgl_ex = tgl_ex;
+        data.price = price;
+        data.stock = stock;
+        data.image = `images/${req.file.filename}`;
+        await data.save();
+      }
+      res.send({
+        code: 200,
+        status: "OK",
+        message: "Success update product",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        status: "Internal server error!",
+        message: "An error occured in server!",
+        errors: true,
+      });
+    }
+  },
+
+  deleteProduct: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const data = await product.findOne({
+        where: { id: { [Op.eq]: id } },
+      });
+
+      if (!data) {
+        return res.send({
+          code: 404,
+          message: `Not Found, Can't find product with id: ${id}`,
+        });
+      }
+      await fs.unlink(path.join(`uploads/${data.image}`));
+      await data.destroy();
+
+      res.send({
+        code: 200,
+        status: "OK",
+        message: "Success deleting product",
+        data: data,
+      });
+    } catch (error) {
+      const { id } = req.params;
+
+      const data = await product.findOne({
+        where: { id: { [Op.eq]: id } },
+      });
+
+      await data.destroy();
+
+      res.send({
+        code: 500,
+        status: "Internal server error!",
+        message: "An error occured in server!",
+        errors: true,
+      });
+    }
   },
 };
