@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       address: DataTypes.STRING,
       status: DataTypes.STRING,
+      lat: DataTypes.STRING,
+      long: DataTypes.STRING,
     },
     { underscored: true }
   );

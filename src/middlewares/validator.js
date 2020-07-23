@@ -31,4 +31,18 @@ module.exports = {
       next();
     },
   ],
+
+  validateApotik: [
+    check("name").notEmpty(),
+    check("lat").notEmpty(),
+    check("long").notEmpty(),
+    check("address").notEmpty(),
+    (req, res, next) => {
+      const error = validationResult(req);
+      if (!error.isEmpty()) {
+        return res.status(422).send({ error: error.array() });
+      }
+      next();
+    },
+  ],
 };
