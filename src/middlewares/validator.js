@@ -14,4 +14,21 @@ module.exports = {
       next();
     },
   ],
+
+  validateUsers: [
+    check("username").notEmpty(),
+    check("nik").notEmpty(),
+    check("password").notEmpty(),
+    check("role").notEmpty(),
+    check("address").notEmpty(),
+    check("ttl").notEmpty(),
+    check("fullname").notEmpty(),
+    (req, res, next) => {
+      const error = validationResult(req);
+      if (!error.isEmpty()) {
+        return res.status(422).send({ error: error.array() });
+      }
+      next();
+    },
+  ],
 };
