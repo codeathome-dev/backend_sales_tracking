@@ -35,12 +35,13 @@ module.exports = {
 
       res.send({
         code: 200,
-        message: "success signin",
         data: { checkUser, token },
       });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Internal server error", error: error });
+      res.send({
+        code: 500,
+        message: "Internal server error",
+      });
     }
   },
 };

@@ -25,16 +25,12 @@ module.exports = {
 
       res.send({
         code: 201,
-        status: "Ok",
-        message: "Success add new  product",
         data: insert,
       });
     } catch (error) {
       res.send({
         code: 500,
-        status: "Internal server error!",
-        message: "An error occured in server!",
-        errors: error,
+        message: "Internal server error!",
       });
     }
   },

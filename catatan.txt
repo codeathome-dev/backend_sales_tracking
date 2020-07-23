@@ -34,13 +34,12 @@
 
 - ####### ini supervisor yang input ######
 # trip
-- place_id
+- apotik_id
 - sales_id
 - day
 - status
 
 # checkout
-- checkout_id
 - notes
 - status (buy, notbuy)
 - lat (opsi bisa masuk di database place)
