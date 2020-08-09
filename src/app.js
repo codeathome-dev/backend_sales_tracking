@@ -11,6 +11,7 @@ const authRouter = require("./routers/auth");
 const productRouter = require("./routers/product");
 const usersRouter = require("./routers/users");
 const aptikRouter = require("./routers/apotik");
+const tripRouter = require("./routers/trip");
 
 app.use(cors());
 app.use(morgan("dev"));
@@ -27,6 +28,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/apotik", aptikRouter);
+app.use("/api/v1/trip", tripRouter);
 
 app.use("*", (req, res) => res.send("Url not found!"));
 

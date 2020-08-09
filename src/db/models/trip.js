@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
   );
   trip.associate = function (models) {
     // associations can be defined here
+    trip.belongsTo(sequelize.models.sales, {
+      foreignKey: "sales_id",
+    });
+    trip.belongsTo(sequelize.models.apotik, {
+      foreignKey: "apotik_id",
+    });
   };
   return trip;
 };
