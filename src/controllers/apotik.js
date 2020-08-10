@@ -8,12 +8,20 @@ module.exports = {
     try {
       const { name, address, long, lat } = req.body;
 
+      if (!req.file) {
+        return res.send({
+          code: 404,
+          message: "Not found, Image",
+        });
+      }
+
       await apotik.create({
         name,
         address,
         long,
         lat,
         status: "Active",
+        image: `images/${req.file.filename}`,
       });
 
       res.send({
@@ -138,12 +146,24 @@ module.exports = {
         });
       }
 
-      data.name = name;
-      data.address = address;
-      data.lat = lat;
-      data.long = long;
+      if (req.file === undefined) {
+        data.name = name;
+        data.address = address;
+        data.lat = lat;
+        data.long = long;
 
-      await data.save();
+        await data.save();
+      } else {
+        await fs.unlink(path.join(`uploads/${data.image}`));
+        data.name = name;
+        data.address = address;
+        data.lat = lat;
+        data.long = long;
+
+        data.image = `images/${req.file.filename}`;
+
+        await data.save();
+      }
 
       res.send({
         code: 200,

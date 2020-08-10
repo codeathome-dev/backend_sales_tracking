@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { isAuth } = require("../middlewares/auth");
 const { validateApotik } = require("../middlewares/validator");
+const { upload } = require("../middlewares/multer");
 const {
   addApotik,
   getApotik,
@@ -11,10 +12,10 @@ const {
 
 router.use(isAuth);
 
-router.post("/", validateApotik, addApotik);
+router.post("/", upload, validateApotik, addApotik);
 router.get("/", getApotik);
 router.get("/:id", getSingleApotik);
-router.put("/:id", validateApotik, updateApotik);
+router.put("/:id", upload, validateApotik, updateApotik);
 router.delete("/:id", deleteApotik);
 
 module.exports = router;
