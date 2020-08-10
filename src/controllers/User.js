@@ -17,46 +17,44 @@ module.exports = {
         ttl,
       } = req.body;
 
-      if (role === "sales") {
-        const checkUser = await user.findOne({
-          where: {
-            [Op.or]: [{ nik }, { username }],
-          } /* query cek kelas yang berisi E2 || E3 */,
-        });
+      const checkUser = await user.findOne({
+        where: {
+          [Op.or]: [{ nik }, { username }],
+        } /* query cek kelas yang berisi E2 || E3 */,
+      });
 
-        if (checkUser) {
-          return res.send({
-            code: 403,
-            message: "Username or Email already exists",
-          });
-        }
-
-        const insertUser = await user.create({
-          username,
-          nik,
-          password,
-          role,
-          status: "Active",
-        });
-
-        await sales.create({
-          fullname,
-          address,
-          ttl,
-          status: "Close",
-          user_id: insertUser.id,
-        });
-
-        res.send({
-          code: 201,
-          message: true,
-        });
-      } else {
-        res.send({
-          code: 201,
-          message: "create supervisor",
+      if (checkUser) {
+        return res.send({
+          code: 403,
+          message: "Username or Email already exists",
         });
       }
+
+      const insertUser = await user.create({
+        username,
+        nik,
+        password,
+        role,
+        status: "Active",
+      });
+
+      await sales.create({
+        fullname,
+        address,
+        ttl,
+        status: "Close",
+        user_id: insertUser.id,
+      });
+
+      res.send({
+        code: 201,
+        message: true,
+      });
+
+      res.send({
+        code: 201,
+        message: "create supervisor",
+      });
     } catch (error) {
       console.log(error);
       res.send({
