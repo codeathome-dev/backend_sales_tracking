@@ -38,6 +38,27 @@ module.exports = {
           code: 200,
           data: { checkUser, token },
         });
+      } else if (checkUser.role === "supervisor") {
+        const isPasswordTrue = checkUser.checkPassword(
+          password,
+          checkUser.password
+        );
+
+        if (!isPasswordTrue) {
+          res.send({
+            code: 403,
+            message: "Forbidden, Your password is invalid!",
+          });
+        }
+
+        delete checkUser.dataValues.password;
+
+        const token = checkUser.generateAuthToken(user);
+
+        res.send({
+          code: 200,
+          data: { checkUser, token },
+        });
       } else {
         res.send({
           code: 403,
