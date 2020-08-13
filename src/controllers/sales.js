@@ -2,18 +2,18 @@ const { user } = require("../db/models");
 
 module.exports = {
   signin: async (req, res) => {
-    const { username, password } = req.body;
+    const { nik, password } = req.body;
     try {
       const checkUser = await user.findOne({
         where: {
-          username,
+          nik,
         },
       });
 
       if (!checkUser) {
         res.send({
           code: 404,
-          message: `Not found, Can't find user with username: ${username}`,
+          message: `Not found, Can't find user with nik: ${nik}`,
         });
       }
 

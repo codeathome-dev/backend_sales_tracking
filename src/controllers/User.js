@@ -26,7 +26,7 @@ module.exports = {
       if (checkUser) {
         return res.send({
           code: 403,
-          message: "Username or Email already exists",
+          message: "Username or Nik already exists",
         });
       }
 
@@ -145,22 +145,24 @@ module.exports = {
       });
   },
 
-  getSingleProduct: async (req, res) => {
+  getSingleUser: async (req, res) => {
     try {
       const { id } = req.params;
-      const data = await product.findOne({
+      const data = await sales.findOne({
         where: { id },
+        include: [{ model: user }],
       });
 
       if (!data)
         return res.send({
           code: 404,
-          message: "Not found, product",
+          message: "Not found, users",
         });
+
       res.send({
         code: 200,
         status: "Ok",
-        message: "Success read single  product",
+        message: "Success read single  users",
         data: data,
       });
     } catch (error) {
@@ -173,42 +175,56 @@ module.exports = {
       });
     }
   },
-  updateProduct: async (req, res) => {
+  updateUser: async (req, res) => {
     try {
       const { id } = req.params;
-      const { name, tgl_ex, price, stock } = req.body;
+      const {
+        username,
+        nik,
+        password,
+        role,
+        fullname,
+        address,
+        ttl,
+        user_id,
+      } = req.body;
 
-      const data = await product.findOne({
+      const data = await sales.findOne({
         where: { id },
+      });
+
+      const users = await user.findOne({
+        where: { id: user_id },
       });
 
       if (!data) {
         return res.send({
           code: 404,
-          message: `Not Found, Can't find product with id: ${id}`,
+          message: `Not Found, Can't find sales with id: ${id}`,
         });
       }
 
-      if (req.file === undefined) {
-        data.name = name;
-        data.tgl_ex = tgl_ex;
-        data.price = price;
-        data.stock = stock;
-
-        await data.save();
-      } else {
-        await fs.unlink(path.join(`uploads/${data.image}`));
-        data.name = name;
-        data.tgl_ex = tgl_ex;
-        data.price = price;
-        data.stock = stock;
-        data.image = `images/${req.file.filename}`;
-        await data.save();
+      if (!users) {
+        return res.send({
+          code: 404,
+          message: `Not Found, Can't find users with id: ${id}`,
+        });
       }
+
+      data.fullname = fullname;
+      data.address = address;
+      data.ttl = ttl;
+      await data.save();
+
+      users.username = username;
+      users.nik = nik;
+      users.password = password;
+      users.role = role;
+
       res.send({
         code: 200,
         status: "OK",
-        message: "Success update product",
+        message: "Success update users",
         data,
       });
     } catch (error) {
