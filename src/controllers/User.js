@@ -220,6 +220,7 @@ module.exports = {
       users.nik = nik;
       users.password = password;
       users.role = role;
+      await users.save();
 
       res.send({
         code: 200,

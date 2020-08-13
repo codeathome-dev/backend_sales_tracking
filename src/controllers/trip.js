@@ -60,4 +60,99 @@ module.exports = {
       });
     }
   },
+
+  getSingleTrip: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const data = await trip.findOne({
+        where: { id },
+        include: [{ model: apotik }, { model: sales }],
+      });
+
+      if (!data) {
+        return res.send({
+          code: 404,
+          message: `Not Found, Can't find trip with id: ${id}`,
+        });
+      }
+
+      res.status(200).json({
+        message: "Success Read Single Trip",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        message: "Internal server error!",
+      });
+    }
+  },
+
+  updateTrip: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { apotik_id, sales_id, day } = req.body;
+
+      const data = await trip.findOne({
+        where: { id },
+      });
+
+      if (!data) {
+        return res.send({
+          code: 404,
+          message: `Not Found, Can't find sales with id: ${id}`,
+        });
+      }
+
+      data.apotik_id = apotik_id;
+      data.sales_id = sales_id;
+      data.day = day;
+      await data.save();
+
+      res.send({
+        code: 200,
+        status: "OK",
+        message: "Success update trip",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        status: "Internal server error!",
+        message: "An error occured in server!",
+        errors: true,
+      });
+    }
+  },
+
+  deleteTrip: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const data = await trip.findOne({
+        where: { id },
+      });
+
+      if (!data) {
+        return res.send({
+          code: 404,
+          message: `Not Found, Can't find trip with id: ${user_id}`,
+        });
+      }
+
+      await data.destroy();
+
+      res.send({
+        code: 200,
+        message: true,
+      });
+    } catch (error) {
+      res.send({
+        code: 500,
+        message: "Internal server error!",
+      });
+    }
+  },
 };

@@ -1,14 +1,19 @@
 const router = require("express").Router();
 const { isAuth } = require("../middlewares/auth");
-// const { validateApotik } = require("../middlewares/validator");
-const { addTrip, getTrip } = require("../controllers/trip");
+const {
+  addTrip,
+  getTrip,
+  getSingleTrip,
+  updateTrip,
+  deleteTrip,
+} = require("../controllers/trip");
 
 router.use(isAuth);
 
 router.post("/", addTrip);
 router.get("/", getTrip);
-// router.get("/:id", getSingleApotik);
-// router.put("/:id", validateApotik, updateApotik);
-// router.delete("/:id", deleteApotik);
+router.get("/:id", getSingleTrip);
+router.put("/:id", updateTrip);
+router.delete("/:id", deleteTrip);
 
 module.exports = router;
