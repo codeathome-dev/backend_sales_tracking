@@ -42,7 +42,7 @@ module.exports = {
         fullname,
         address,
         ttl,
-        status: "Close",
+        status: "Open",
         user_id: insertUser.id,
       });
 
