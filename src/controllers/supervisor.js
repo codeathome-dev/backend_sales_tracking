@@ -1,4 +1,4 @@
-const { apotik, trip, sales, user } = require("../db/models");
+const { apotik, trip, sales, user, detailtrip } = require("../db/models");
 
 const path = require("path");
 const fs = require("fs-extra");
@@ -65,32 +65,93 @@ module.exports = {
 
   addSalesToTrip: async (req, res) => {
     try {
-      const { id } = req.params;
+      const { trip_id } = req.params;
       const { sales_id } = req.body;
 
-      const data = await trip.findOne({
-        where: { id },
+      const data = await detailtrip.create({
+        sales_id,
+        trip_id,
+        status: "Active",
       });
 
-      if (!data) {
-        return res.send({
-          code: 404,
-          message: `Not Found, Can't find sales with id: ${id}`,
-        });
-      }
-
-      data.sales_id = sales_id;
-
-      await data.save();
-
       res.send({
-        code: 200,
+        code: 201,
         status: "OK",
         message: "Success update trip",
         data,
       });
     } catch (error) {
       console.log(error);
+      res.send({
+        code: 500,
+        status: "Internal server error!",
+        message: "An error occured in server!",
+        errors: true,
+      });
+    }
+  },
+  getDetailSalesTrip: async (req, res) => {
+    try {
+      const { trip_id } = req.params;
+      const data = await detailtrip.findAll({
+        where: {
+          [Op.and]: [{ status: "Active" }, { trip_id: trip_id }],
+        },
+        include: [
+          {
+            model: trip,
+          },
+          {
+            model: sales,
+          },
+        ],
+      });
+
+      res.status(200).json({
+        message: "Success Read Sales",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        message: "Internal server error!",
+      });
+    }
+  },
+
+  deleteDetailTrip: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const data = await detailtrip.findOne({
+        where: { id: { [Op.eq]: id } },
+      });
+
+      if (!data) {
+        return res.send({
+          code: 404,
+          message: `Not Found, Can't find detail trip with ${id} `,
+        });
+      }
+
+      await data.destroy();
+
+      res.send({
+        code: 200,
+        status: "OK",
+        message: "Success deleting detail trip",
+        data: data,
+      });
+    } catch (error) {
+      const { id } = req.params;
+
+      const data = await product.findOne({
+        where: { id: { [Op.eq]: id } },
+      });
+
+      await data.destroy();
+
       res.send({
         code: 500,
         status: "Internal server error!",
