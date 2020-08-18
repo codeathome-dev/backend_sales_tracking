@@ -1,4 +1,4 @@
-const { apotik, trip, sales, user } = require("../db/models");
+const { apotik, trip, sales, user, detailtrip } = require("../db/models");
 
 module.exports = {
   signin: async (req, res) => {
@@ -77,28 +77,20 @@ module.exports = {
   getTripSingleSales: async (req, res) => {
     try {
       const { sales_id } = req.params;
-      const data = await trip.findAll({
+      const data = await detailtrip.findAll({
         where: { sales_id: sales_id },
-        include: [{ model: apotik }, { model: sales }],
+        include: [
+          {
+            model: trip,
+            include: [{ model: apotik }],
+          },
+          { model: sales },
+        ],
       });
 
-      let trips = [];
-      data.forEach((data) => {
-        trips.push({
-          id: data.id,
-          day: data.day,
-          //   address: data.address,
-          apotik_id: data.apotik ? data.apotik.id : "",
-          name_apotik: data.apotik ? data.apotik.name : "",
-          image: data.apotik ? data.apotik.image : "",
-          address_apotik: data.apotik ? data.apotik.address : "",
-          sales_id: data.sale ? data.sale.id : "",
-          fullname: data.sale ? data.sale.fullname : "",
-        });
-      });
       res.status(200).json({
         message: "Success Read trip",
-        data: trips,
+        data,
       });
     } catch (error) {
       console.log(error);
