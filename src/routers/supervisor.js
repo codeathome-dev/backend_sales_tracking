@@ -6,12 +6,16 @@ const {
   getTrip,
   getSalesOpen,
   addSalesToTrip,
+  getDetailSalesTrip,
+  deleteDetailTrip,
 } = require("../controllers/supervisor");
 
 router.use(isAuth);
 
 router.get("/", getTrip);
-router.put("/add-sales-to-trip/:id", addSalesToTrip);
+router.post("/add-sales-to-trip/:trip_id", addSalesToTrip);
 router.get("/sales-open/", getSalesOpen);
+router.get("/show-detail-trip/:trip_id", getDetailSalesTrip);
+router.delete("/delete-sales-to-trip/:id", deleteDetailTrip);
 
 module.exports = router;
