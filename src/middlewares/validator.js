@@ -45,4 +45,16 @@ module.exports = {
       next();
     },
   ],
+
+  validateAddCart: [
+    check("product_id").notEmpty(),
+    check("qty").notEmpty(),
+    (req, res, next) => {
+      const error = validationResult(req);
+      if (!error.isEmpty()) {
+        return res.status(422).send({ error: error.array() });
+      }
+      next();
+    },
+  ],
 };
