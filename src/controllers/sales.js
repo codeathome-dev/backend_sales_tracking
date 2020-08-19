@@ -1,4 +1,12 @@
-const { apotik, trip, sales, user, detailtrip } = require("../db/models");
+const {
+  apotik,
+  trip,
+  sales,
+  user,
+  detailtrip,
+  cart,
+  product,
+} = require("../db/models");
 
 module.exports = {
   signin: async (req, res) => {
@@ -86,6 +94,69 @@ module.exports = {
           },
           { model: sales },
         ],
+      });
+
+      res.status(200).json({
+        message: "Success Read trip",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        message: "Internal server error!",
+      });
+    }
+  },
+
+  addCartSales: async (req, res) => {
+    try {
+      const { detailtrip_id } = req.params;
+      const { product_id, qty } = req.body;
+
+      const check_product = await product.findOne({
+        where: { id: product_id },
+      });
+
+      if (!check_product) {
+        return res.send({
+          code: 404,
+          message: `Not Found, Can't find product with id: ${id}`,
+        });
+      }
+
+      if (qty > check_product.stock) {
+        return res.send({
+          code: 403,
+          message: `QTY Melebihi jumlah stock`,
+        });
+      }
+      const data = await cart.create({
+        product_id,
+        detailtrip_id,
+        qty,
+        price: check_product.price,
+      });
+
+      res.send({
+        code: 201,
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        message: "Internal server error!",
+      });
+    }
+  },
+
+  getCartSales: async (req, res) => {
+    try {
+      const { detailtrip_id } = req.params;
+      const data = await cart.findAll({
+        where: { detailtrip_id: detailtrip_id },
+        include: [{ model: detailtrip }, { model: product }],
       });
 
       res.status(200).json({

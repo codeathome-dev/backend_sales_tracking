@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     "order",
     {
       sales_id: DataTypes.INTEGER,
-      trip_id: DataTypes.INTEGER,
+      detailtrip_id: DataTypes.INTEGER,
       product_id: DataTypes.INTEGER,
       checkout_id: DataTypes.INTEGER,
       qty: DataTypes.INTEGER,
