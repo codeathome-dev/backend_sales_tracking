@@ -171,4 +171,33 @@ module.exports = {
       });
     }
   },
+
+  deleteCartSales: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const data = await cart.findOne({
+        where: { id },
+      });
+
+      if (!data) {
+        return res.send({
+          code: 404,
+          message: `Not Found, Can't find cart with id: ${user_id}`,
+        });
+      }
+
+      await data.destroy();
+
+      res.send({
+        code: 200,
+        message: true,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        message: "Internal server error!",
+      });
+    }
+  },
 };
