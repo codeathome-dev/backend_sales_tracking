@@ -57,4 +57,16 @@ module.exports = {
       next();
     },
   ],
+
+  validateAddCheckout: [
+    check("sales_id").notEmpty(),
+    check("notes").notEmpty(),
+    (req, res, next) => {
+      const error = validationResult(req);
+      if (!error.isEmpty()) {
+        return res.status(422).send({ error: error.array() });
+      }
+      next();
+    },
+  ],
 };
