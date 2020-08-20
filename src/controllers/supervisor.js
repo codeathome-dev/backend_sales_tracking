@@ -1,7 +1,16 @@
-const { apotik, trip, sales, user, detailtrip } = require("../db/models");
+const {
+  apotik,
+  trip,
+  sales,
+  user,
+  detailtrip,
+  checkout,
+  order,
+} = require("../db/models");
 
 const path = require("path");
 const fs = require("fs-extra");
+
 const Op = require("sequelize").Op;
 
 module.exports = {
@@ -152,6 +161,71 @@ module.exports = {
 
       await data.destroy();
 
+      res.send({
+        code: 500,
+        status: "Internal server error!",
+        message: "An error occured in server!",
+        errors: true,
+      });
+    }
+  },
+
+  getTrackingSalesinApotik: async (req, res) => {
+    try {
+      const { sales_id } = req.params;
+      const checkSales = await sales.findOne({
+        where: { id: sales_id },
+      });
+
+      const data = await checkout.findAll({
+        where: { sales_id },
+        include: [
+          {
+            model: apotik,
+          },
+        ],
+      });
+
+      res.send({
+        code: 200,
+        sales: checkSales,
+        tracking: data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        status: "Internal server error!",
+        message: "An error occured in server!",
+        errors: true,
+      });
+    }
+  },
+
+  getDetailTrackingAndHistory: async (req, res) => {
+    try {
+      const { checkout_id } = req.params;
+
+      const data = await order.findAll({
+        where: { checkout_id },
+        include: [
+          {
+            model: checkout,
+            include: [
+              {
+                model: apotik,
+              },
+            ],
+          },
+        ],
+      });
+
+      res.send({
+        code: 200,
+        data,
+      });
+    } catch (error) {
+      console.log(error);
       res.send({
         code: 500,
         status: "Internal server error!",

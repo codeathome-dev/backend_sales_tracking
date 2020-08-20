@@ -6,6 +6,8 @@ const {
   detailtrip,
   cart,
   product,
+  checkout,
+  order,
 } = require("../db/models");
 
 module.exports = {
@@ -191,6 +193,87 @@ module.exports = {
       res.send({
         code: 200,
         message: true,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        message: "Internal server error!",
+      });
+    }
+  },
+
+  addSalestoApotik: async (req, res) => {
+    try {
+      const { detailtrip_id } = req.params;
+      const { notes, sales_id } = req.body;
+      if (!req.file) {
+        return res.send({
+          code: 404,
+          message: "Not found, Image",
+        });
+      }
+
+      const check_apotik = await detailtrip.findOne({
+        where: { id: detailtrip_id, sales_id },
+        include: [
+          {
+            model: trip,
+            include: [
+              {
+                model: apotik,
+              },
+            ],
+          },
+        ],
+      });
+
+      if (!check_apotik) {
+        return res.send({
+          code: 404,
+          message: "Not found, id sales or id detailtrip",
+        });
+      }
+
+      const check_card_by_sales = await cart.findAll();
+
+      const insert = await checkout.create({
+        notes,
+        sales_id: sales_id,
+        apotik_id: check_apotik.trip.apotik.id,
+        status: "Active",
+        long: check_apotik.trip.apotik.long,
+        lat: check_apotik.trip.apotik.lat,
+        image: `images/${req.file.filename}`,
+      });
+
+      for (let i = 0; i < check_card_by_sales.length; i++) {
+        const insertOrder = await order.create({
+          sales_id: sales_id,
+          detailtrip_id: detailtrip_id,
+          product_id: check_card_by_sales[i].product_id,
+          checkout_id: insert.id,
+          qty: check_card_by_sales[i].qty,
+          price: check_card_by_sales[i].price,
+        });
+
+        const updateStockProduct = await product.findOne({
+          where: { id: insertOrder.product_id },
+        });
+
+        updateStockProduct.stock -= insertOrder.qty;
+        await updateStockProduct.save();
+
+        const remoteCart = await cart.findOne({
+          id: check_card_by_sales[i].id,
+        });
+
+        await remoteCart.destroy();
+      }
+
+      res.send({
+        code: 201,
+        insert,
       });
     } catch (error) {
       console.log(error);
