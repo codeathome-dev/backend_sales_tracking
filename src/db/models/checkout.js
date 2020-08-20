@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sales_id: DataTypes.INTEGER,
       apotik_id: DataTypes.INTEGER,
+      total_harga: DataTypes.INTEGER,
       image: DataTypes.STRING,
       notes: DataTypes.STRING,
       status: DataTypes.STRING,
@@ -21,6 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     checkout.belongsTo(sequelize.models.apotik, {
       foreignKey: "apotik_id",
     });
+
+    checkout.hasMany(models.order);
   };
   return checkout;
 };

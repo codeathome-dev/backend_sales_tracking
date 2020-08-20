@@ -29,6 +29,9 @@ module.exports = {
       long: {
         type: Sequelize.STRING,
       },
+      total_harga: {
+        type: Sequelize.INTEGER,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,

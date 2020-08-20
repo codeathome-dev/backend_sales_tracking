@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     order.belongsTo(sequelize.models.checkout, {
       foreignKey: "checkout_id",
     });
+    order.belongsTo(sequelize.models.product, {
+      foreignKey: "product_id",
+    });
     order.belongsTo(sequelize.models.detailtrip, {
       foreignKey: "detailtrip_id",
     });

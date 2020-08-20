@@ -14,6 +14,7 @@ const aptikRouter = require("./routers/apotik");
 const tripRouter = require("./routers/trip");
 const salesRouter = require("./routers/sales");
 const supervisorRouter = require("./routers/supervisor");
+const checkoutRouter = require("./routers/checkout");
 
 app.use(cors());
 app.use(morgan("dev"));
@@ -33,6 +34,7 @@ app.use("/api/v1/apotik", aptikRouter);
 app.use("/api/v1/trip", tripRouter);
 app.use("/api/v1/sales", salesRouter);
 app.use("/api/v1/supervisor", supervisorRouter);
+app.use("/api/v1/checkout", checkoutRouter);
 
 app.use("*", (req, res) => res.send("Url not found!"));
 
