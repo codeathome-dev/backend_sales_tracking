@@ -239,6 +239,8 @@ module.exports = {
 
       const insert = await checkout.create({
         notes,
+        sales_id: sales_id,
+        apotik_id: check_apotik.trip.apotik.id,
         status: "Active",
         long: check_apotik.trip.apotik.long,
         lat: check_apotik.trip.apotik.lat,
