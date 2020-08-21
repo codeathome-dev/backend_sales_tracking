@@ -245,8 +245,11 @@ module.exports = {
         long: check_apotik.trip.apotik.long,
         lat: check_apotik.trip.apotik.lat,
         image: `images/${req.file.filename}`,
+        total_harga: 0,
       });
 
+      let total_harga = 0;
+      let tampung = 0;
       for (let i = 0; i < check_card_by_sales.length; i++) {
         const insertOrder = await order.create({
           sales_id: sales_id,
@@ -256,6 +259,10 @@ module.exports = {
           qty: check_card_by_sales[i].qty,
           price: check_card_by_sales[i].price,
         });
+
+        tampung = check_card_by_sales[i].qty * check_card_by_sales[i].price;
+
+        total_harga += tampung;
 
         const updateStockProduct = await product.findOne({
           where: { id: insertOrder.product_id },
@@ -270,6 +277,9 @@ module.exports = {
 
         await remoteCart.destroy();
       }
+
+      insert.total_harga = total_harga;
+      await insert.save();
 
       res.send({
         code: 201,

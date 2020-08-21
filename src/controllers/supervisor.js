@@ -183,6 +183,9 @@ module.exports = {
           {
             model: apotik,
           },
+          {
+            model: sales,
+          },
         ],
       });
 
