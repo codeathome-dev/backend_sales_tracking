@@ -7,7 +7,7 @@ const {
   deleteUser,
   getSingleUser,
   updateUser,
-} = require("../controllers/user");
+} = require("../controllers/User");
 
 router.use(isAuth);
 
