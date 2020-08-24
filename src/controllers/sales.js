@@ -299,4 +299,38 @@ module.exports = {
       });
     }
   },
+
+  changeStatusSales: async (req, res) => {
+    try {
+      const { sales_id } = req.params;
+      const data = await sales.findOne({
+        where: { id: sales_id },
+      });
+
+      if (!data) {
+        return res.send({
+          code: 404,
+          message: `Not Found, Can't find sales with id: ${id}`,
+        });
+      }
+      if (data.status === "Open") {
+        data.status = "Close";
+      } else {
+        data.status = "Open";
+      }
+      await data.save();
+
+      res.send({
+        code: 200,
+        message: "Success update status sales",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        code: 500,
+        message: "Internal server error!",
+      });
+    }
+  },
 };
