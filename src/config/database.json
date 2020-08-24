@@ -1,13 +1,13 @@
 {
   "development": {
-    "username": "root",
+    "username": "dbsalestracking",
     "password": null,
     "database": "db_sales_tracking",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
+    "username": "dbsalestracking",
     "password": null,
     "database": "database_test",
     "host": "127.0.0.1",
