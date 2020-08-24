@@ -9,6 +9,7 @@ const {
   checkout,
   order,
 } = require("../db/models");
+const Op = require("sequelize").Op;
 
 module.exports = {
   signin: async (req, res) => {
@@ -88,7 +89,9 @@ module.exports = {
     try {
       const { sales_id } = req.params;
       const data = await detailtrip.findAll({
-        where: { sales_id: sales_id },
+        where: {
+          [Op.and]: [{ status: "Active" }, { sales_id: sales_id }],
+        },
         include: [
           {
             model: trip,
@@ -280,6 +283,9 @@ module.exports = {
 
       insert.total_harga = total_harga;
       await insert.save();
+
+      check_apotik.status = "Nonactive";
+      check_apotik.save();
 
       res.send({
         code: 201,

@@ -104,7 +104,7 @@ module.exports = {
       const { trip_id } = req.params;
       const data = await detailtrip.findAll({
         where: {
-          [Op.and]: [{ status: "Active" }, { trip_id: trip_id }],
+          [Op.and]: [{ trip_id: trip_id }],
         },
         include: [
           {

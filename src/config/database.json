@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "dbsalestracking",
+    "username": "root",
     "password": null,
     "database": "db_sales_tracking",
     "host": "127.0.0.1",
