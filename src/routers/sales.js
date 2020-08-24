@@ -7,6 +7,7 @@ const {
   addCartSales,
   deleteCartSales,
   addSalestoApotik,
+  changeStatusSales,
 } = require("../controllers/sales");
 const {
   validateAddCart,
@@ -25,5 +26,7 @@ router.post(
   validateAddCheckout,
   addSalestoApotik
 );
+
+router.put("/change-status/:sales_id", changeStatusSales);
 
 module.exports = router;
