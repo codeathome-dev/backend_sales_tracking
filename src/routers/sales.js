@@ -8,6 +8,7 @@ const {
   deleteCartSales,
   addSalestoApotik,
   changeStatusSales,
+  dashboard,
 } = require("../controllers/sales");
 const {
   validateAddCart,
@@ -28,5 +29,7 @@ router.post(
 );
 
 router.put("/change-status/:sales_id", changeStatusSales);
+
+router.get("/dashboard/:sales_id", dashboard);
 
 module.exports = router;
