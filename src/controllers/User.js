@@ -123,7 +123,7 @@ module.exports = {
             fullname: data.fullname,
             address: data.address,
             status: data.status,
-            ttl: moment(data.ttl).format("DD-MM-YYYY, h:mm:ss"),
+            ttl: moment(data.ttl).format("DD-MM-YYYY"),
             nik: data.user ? data.user.nik : "",
             user_id: data.user ? data.user.id : "",
             username: data.user ? data.user.username : "",

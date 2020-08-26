@@ -40,4 +40,5 @@ app.use("/api/v1/dashboard", dashboardRouter);
 
 app.use("*", (req, res) => res.send("Url not found!"));
 
-app.listen(process.env.PORT || 4000, () => console.log(`success run`));
+const port = 5000;
+app.listen(process.env.PORT || port, () => console.log(`success run${port}`));

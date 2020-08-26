@@ -12,7 +12,7 @@ const {
 } = require("../controllers/sales");
 const {
   validateAddCart,
-  validateAddCheckout,
+  // validateAddCheckout,
 } = require("../middlewares/validator");
 const { upload } = require("../middlewares/multer");
 
@@ -21,12 +21,7 @@ router.get("/trip-single-sales/:sales_id", getTripSingleSales);
 router.get("/cart-sales/:detailtrip_id", getCartSales);
 router.post("/cart-sales/:detailtrip_id", validateAddCart, addCartSales);
 router.delete("/cart-sales/:id", deleteCartSales);
-router.post(
-  "/checkout/:detailtrip_id",
-  upload,
-  validateAddCheckout,
-  addSalestoApotik
-);
+router.post("/checkout/:detailtrip_id", upload, addSalestoApotik);
 
 router.put("/change-status/:sales_id", changeStatusSales);
 

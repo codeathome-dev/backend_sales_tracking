@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       address: DataTypes.STRING,
       ttl: DataTypes.DATE,
       status: DataTypes.STRING,
+      image: DataTypes.STRING,
       user_id: DataTypes.INTEGER,
     },
     { underscored: true }
