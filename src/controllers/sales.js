@@ -333,4 +333,35 @@ module.exports = {
       });
     }
   },
+  dashboard: async (req, res) => {
+    try {
+      const { sales_id } = req.params;
+      const total_trip = await detailtrip.findAll({
+        where: { sales_id },
+      });
+
+      const trip_sucess = await detailtrip.findAll({
+        [Op.and]: [{ status: "Nonactive" }, { sales_id: sales_id }],
+      });
+
+      const orderTotal = await order.findAll({
+        where: { sales_id },
+      });
+
+      console.log(orderTotal);
+      let totalProduct = 0;
+      orderTotal.forEach((data) => {
+        totalProduct += data.qty;
+      });
+
+      res.status(200).json({
+        message: true,
+        total_trip: total_trip.length,
+        trip_success: trip_sucess.length,
+        total_product: totalProduct,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
