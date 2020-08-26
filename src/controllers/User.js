@@ -17,6 +17,13 @@ module.exports = {
         ttl,
       } = req.body;
 
+      if (!req.file) {
+        return res.send({
+          code: 404,
+          message: "Not found, Image",
+        });
+      }
+
       const checkUser = await user.findOne({
         where: {
           [Op.or]: [{ nik }, { username }],
@@ -44,6 +51,7 @@ module.exports = {
         ttl,
         status: "Close",
         user_id: insertUser.id,
+        image: `images/${req.file.filename}`,
       });
 
       res.send({
@@ -123,11 +131,12 @@ module.exports = {
             fullname: data.fullname,
             address: data.address,
             status: data.status,
-            ttl: moment(data.ttl).format("DD-MM-YYYY, h:mm:ss"),
+            ttl: moment(data.ttl).format("DD-MM-YYYY"),
             nik: data.user ? data.user.nik : "",
             user_id: data.user ? data.user.id : "",
             username: data.user ? data.user.username : "",
             role: data.user ? data.user.role : "",
+            image: data.image,
           });
         });
         res.status(200).json({
@@ -179,6 +188,7 @@ module.exports = {
   updateUser: async (req, res) => {
     try {
       const { id } = req.params;
+      console.log(id);
       const {
         username,
         nik,
@@ -211,11 +221,19 @@ module.exports = {
           message: `Not Found, Can't find users with id: ${id}`,
         });
       }
-
-      data.fullname = fullname;
-      data.address = address;
-      data.ttl = ttl;
-      await data.save();
+      if (req.file === undefined) {
+        data.fullname = fullname;
+        data.address = address;
+        data.ttl = ttl;
+        await data.save();
+      } else {
+        await fs.unlink(path.join(`uploads/${data.image}`));
+        data.fullname = fullname;
+        data.address = address;
+        data.ttl = ttl;
+        data.image = `images/${req.file.filename}`;
+        await data.save();
+      }
 
       users.username = username;
       users.nik = nik;

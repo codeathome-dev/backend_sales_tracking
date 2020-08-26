@@ -9,12 +9,14 @@ const {
   updateUser,
 } = require("../controllers/User");
 
+const { upload } = require("../middlewares/multer");
+
 router.use(isAuth);
 
-router.post("/", validateUsers, addUser);
+router.post("/", upload, validateUsers, addUser);
 router.get("/", getUser);
 router.get("/:id", getSingleUser);
-router.put("/:id", updateUser);
+router.put("/:id", upload, validateUsers, updateUser);
 router.delete("/:user_id", deleteUser);
 
 module.exports = router;

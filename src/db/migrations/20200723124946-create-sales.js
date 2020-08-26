@@ -20,6 +20,9 @@ module.exports = {
       status: {
         type: Sequelize.STRING,
       },
+      image: {
+        type: Sequelize.STRING,
+      },
       user_id: {
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",

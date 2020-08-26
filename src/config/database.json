@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "db_sales_tracking",
-    "host": "127.0.0.1",
+    "username": "dbsalestracking",
+    "password": "Copyright12@",
+    "database": "dbsalestracking",
+    "host": "sales-tracking.karcismu.com",
     "dialect": "mysql"
   },
   "test": {
     "username": "dbsalestracking",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
+    "password": "Copyright12@",
+    "database": "dbsalestracking",
+    "host": "sales-tracking.karcismu.com",
     "dialect": "mysql"
   },
   "production": {
-    "username": "mbuqgqhcsshnaa",
-    "password": "4405e31dbe1994bfa17f391454a2ec9485585c57d7fed9cc2598d35ca9d7618e",
-    "database": "d28nku1q9e75j1",
-    "host": "ec2-18-235-97-230.compute-1.amazonaws.com",
-    "dialect": "postgres"
+    "username": "dbsalestracking",
+    "password": "Copyright12@",
+    "database": "dbsalestracking",
+    "host": "sales-tracking.karcismu.com",
+    "dialect": "mysql"
   }
 }

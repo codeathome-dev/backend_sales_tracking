@@ -210,12 +210,12 @@ module.exports = {
     try {
       const { detailtrip_id } = req.params;
       const { notes, sales_id } = req.body;
-      if (!req.file) {
-        return res.send({
-          code: 404,
-          message: "Not found, Image",
-        });
-      }
+      // if (!req.file) {
+      //   return res.send({
+      //     code: 404,
+      //     message: "Not found, Image",
+      //   });
+      // }
 
       const check_apotik = await detailtrip.findOne({
         where: { id: detailtrip_id, sales_id },
@@ -241,13 +241,13 @@ module.exports = {
       const check_card_by_sales = await cart.findAll();
 
       const insert = await checkout.create({
-        notes,
+        notes: notes ? notes : "",
         sales_id: sales_id,
         apotik_id: check_apotik.trip.apotik.id,
         status: "Active",
         long: check_apotik.trip.apotik.long,
         lat: check_apotik.trip.apotik.lat,
-        image: `images/${req.file.filename}`,
+        image: req.file ? `images/${req.file.filename}` : "",
         total_harga: 0,
       });
 
