@@ -1,14 +1,4 @@
-const {
-  apotik,
-  trip,
-  sales,
-  user,
-  detailtrip,
-  cart,
-  product,
-  checkout,
-  order,
-} = require("../db/models");
+const { apotik, trip, sales, user, detailtrip, cart, product, checkout, order } = require("../db/models");
 const Op = require("sequelize").Op;
 
 module.exports = {
@@ -30,10 +20,7 @@ module.exports = {
       }
 
       if (checkUser.role === "sales") {
-        const isPasswordTrue = checkUser.checkPassword(
-          password,
-          checkUser.password
-        );
+        const isPasswordTrue = checkUser.checkPassword(password, checkUser.password);
 
         if (!isPasswordTrue) {
           res.send({
@@ -51,10 +38,7 @@ module.exports = {
           data: { checkUser, token },
         });
       } else if (checkUser.role === "supervisor") {
-        const isPasswordTrue = checkUser.checkPassword(
-          password,
-          checkUser.password
-        );
+        const isPasswordTrue = checkUser.checkPassword(password, checkUser.password);
 
         if (!isPasswordTrue) {
           res.send({
@@ -341,7 +325,9 @@ module.exports = {
       });
 
       const trip_sucess = await detailtrip.findAll({
-        [Op.and]: [{ status: "Nonactive" }, { sales_id: sales_id }],
+        where: {
+          [Op.and]: [{ status: "Nonactive" }, { sales_id: sales_id }],
+        },
       });
 
       const orderTotal = await order.findAll({

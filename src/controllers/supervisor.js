@@ -1,12 +1,4 @@
-const {
-  apotik,
-  trip,
-  sales,
-  user,
-  detailtrip,
-  checkout,
-  order,
-} = require("../db/models");
+const { apotik, trip, sales, user, detailtrip, checkout, order, product } = require("../db/models");
 
 const path = require("path");
 const fs = require("fs-extra");
@@ -219,6 +211,9 @@ module.exports = {
                 model: apotik,
               },
             ],
+          },
+          {
+            model: product,
           },
         ],
       });

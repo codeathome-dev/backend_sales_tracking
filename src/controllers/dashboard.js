@@ -1,13 +1,4 @@
-const {
-  apotik,
-  trip,
-  sales,
-  user,
-  detailtrip,
-  checkout,
-  order,
-  product,
-} = require("../db/models");
+const { apotik, trip, sales, user, detailtrip, checkout, order, product } = require("../db/models");
 
 module.exports = {
   dashboard: async (req, res) => {
@@ -35,6 +26,11 @@ module.exports = {
         include: [
           {
             model: sales,
+            include: [
+              {
+                model: user,
+              },
+            ],
           },
           {
             model: apotik,
