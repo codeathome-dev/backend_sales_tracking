@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs-extra");
 const Op = require("sequelize").Op;
 const moment = require("moment");
+const bcrypt = require("bcryptjs");
 
 module.exports = {
   addUser: async (req, res) => {
@@ -27,7 +28,7 @@ module.exports = {
       const checkUser = await user.findOne({
         where: {
           [Op.or]: [{ nik }, { username }],
-        } /* query cek kelas yang berisi E2 || E3 */,
+        }
       });
 
       if (checkUser) {
@@ -188,8 +189,7 @@ module.exports = {
   updateUser: async (req, res) => {
     try {
       const { id } = req.params;
-      console.log(id);
-      const {
+      let {
         username,
         nik,
         password,
@@ -207,6 +207,9 @@ module.exports = {
       const users = await user.findOne({
         where: { id: user_id },
       });
+
+      console.log("password")
+      console.log(password)
 
       if (!data) {
         return res.send({
@@ -234,12 +237,26 @@ module.exports = {
         data.image = `images/${req.file.filename}`;
         await data.save();
       }
+      const isPasswordTrue = users.checkPassword(
+        password,
+        users.password
+      );
 
-      users.username = username;
-      users.nik = nik;
-      users.password = password;
-      users.role = role;
-      await users.save();
+      if (isPasswordTrue) {
+        users.username = username;
+        users.nik = nik;
+        users.role = role;
+        await users.save();
+      } else {
+        const salt = bcrypt.genSaltSync(10);
+        password = bcrypt.hashSync(password, salt);
+        users.username = username;
+        users.nik = nik;
+        users.password = password;
+        users.role = role;
+        await users.save();
+
+      }
 
       res.send({
         code: 200,

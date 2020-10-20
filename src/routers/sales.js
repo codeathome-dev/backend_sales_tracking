@@ -23,6 +23,13 @@ router.post("/cart-sales/:detailtrip_id", validateAddCart, addCartSales);
 router.delete("/cart-sales/:id", deleteCartSales);
 router.post("/checkout/:detailtrip_id", upload, addSalestoApotik);
 
+
+
+
+
+
+
+
 router.put("/change-status/:sales_id", changeStatusSales);
 
 router.get("/dashboard/:sales_id", dashboard);

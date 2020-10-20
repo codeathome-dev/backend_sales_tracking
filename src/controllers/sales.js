@@ -143,6 +143,13 @@ module.exports = {
   getCartSales: async (req, res) => {
     try {
       const { detailtrip_id } = req.params;
+      const apotikDetailTrip = await detailtrip.findOne({
+        where: { id: detailtrip_id },
+        include: [{
+          model: trip,
+          include: [{ model: apotik }],
+        }],
+      })
       const data = await cart.findAll({
         where: { detailtrip_id: detailtrip_id },
         include: [{ model: detailtrip }, { model: product }],
@@ -151,6 +158,7 @@ module.exports = {
       res.status(200).json({
         message: "Success Read trip",
         data,
+        apotikDetailTrip
       });
     } catch (error) {
       console.log(error);
