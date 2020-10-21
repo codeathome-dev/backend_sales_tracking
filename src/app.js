@@ -16,6 +16,7 @@ const salesRouter = require("./routers/sales");
 const supervisorRouter = require("./routers/supervisor");
 const checkoutRouter = require("./routers/checkout");
 const dashboardRouter = require("./routers/dashboard");
+const radiusRouter = require("./routers/radius");
 
 app.use(cors());
 app.use(morgan("dev"));
@@ -37,6 +38,7 @@ app.use("/api/v1/sales", salesRouter);
 app.use("/api/v1/supervisor", supervisorRouter);
 app.use("/api/v1/checkout", checkoutRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
+app.use("/api/v1/radius", radiusRouter);
 
 app.use("*", (req, res) => res.send("Url not found!"));
 
