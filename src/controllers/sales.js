@@ -201,7 +201,7 @@ module.exports = {
   addSalestoApotik: async (req, res) => {
     try {
       const { detailtrip_id } = req.params;
-      const { notes, sales_id } = req.body;
+      const { notes, sales_id, lat, long } = req.body;
       // if (!req.file) {
       //   return res.send({
       //     code: 404,
@@ -237,8 +237,8 @@ module.exports = {
         sales_id: sales_id,
         apotik_id: check_apotik.trip.apotik.id,
         status: "Active",
-        long: check_apotik.trip.apotik.long,
-        lat: check_apotik.trip.apotik.lat,
+        long: long,
+        lat: lat,
         image: req.file ? `images/${req.file.filename}` : "",
         total_harga: 0,
       });
