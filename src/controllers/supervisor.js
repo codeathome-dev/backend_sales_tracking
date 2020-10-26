@@ -20,6 +20,8 @@ module.exports = {
           //   address: data.address,
           apotik_id: data.apotik ? data.apotik.id : "",
           name_apotik: data.apotik ? data.apotik.name : "",
+          lat_apotik: data.apotik ? data.apotik.lat : "",
+          long_apotik: data.apotik ? data.apotik.long : "",
           image: data.apotik ? data.apotik.image : "",
           address_apotik: data.apotik ? data.apotik.address : "",
           sales_id: data.sale ? data.sale.id : "",
